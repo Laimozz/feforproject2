@@ -1,0 +1,316 @@
+/* ═══════════════════════════════════════════
+   AppNavbar
+═══════════════════════════════════════════ */
+
+.appnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 72px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  transition: box-shadow 0.25s ease;
+}
+
+.appnav--scrolled {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.appnav__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* ── Logo ── */
+.appnav__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.appnav__logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.appnav__logo-icon svg { color: #fff; }
+
+.appnav__logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+/* ── Nav links ── */
+.appnav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.appnav__link {
+  position: relative;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+.appnav__link:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.appnav__link--active {
+  color: #3730a3;
+  background: #eef2ff;
+  font-weight: 600;
+}
+
+.appnav__link--active::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #3730a3;
+  border-radius: 50%;
+}
+
+/* ── Auth buttons ── */
+.appnav__auth {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.appnav__btn-login {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 22px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #3730a3;
+  background: transparent;
+  border: 2px solid #3730a3;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.appnav__btn-login:hover {
+  background: #eef2ff;
+}
+
+.appnav__btn-register {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 22px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #3730a3;
+  border: 2px solid #3730a3;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.appnav__btn-register:hover {
+  background: #312e81;
+  border-color: #312e81;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(55,48,163,0.35);
+}
+
+/* ── User menu (đã login) ── */
+.appnav__user {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.appnav__user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 9999px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.appnav__user-btn:hover {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px #eef2ff;
+}
+
+.appnav__avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.appnav__user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appnav__chevron {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  transition: transform 0.15s ease;
+}
+
+.appnav__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown ── */
+.appnav__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 210px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(55,48,163,0.12);
+  padding: 8px;
+  animation: slideDown 0.2s ease both;
+  z-index: 200;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.appnav__dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.appnav__dropdown-name {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #0f172a;
+}
+
+.appnav__dropdown-role {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.appnav__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  border-radius: 12px;
+  transition: background 0.15s ease, color 0.15s ease;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.appnav__dropdown-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.appnav__dropdown-item--danger {
+  color: #dc2626;
+}
+
+.appnav__dropdown-item--danger:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.appnav__dropdown-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 8px 0;
+}
+
+/* ── Hamburger mobile ── */
+.appnav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.appnav__hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #0f172a;
+  border-radius: 2px;
+  display: block;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .appnav__links    { display: none; }
+  .appnav__hamburger { display: flex; }
+
+  .appnav__btn-login,
+  .appnav__btn-register {
+    padding: 7px 14px;
+    font-size: 0.75rem;
+  }
+
+  .appnav__user-name { display: none; }
+}

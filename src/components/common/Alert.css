@@ -1,0 +1,30 @@
+/* ─────────────────────────────────────────
+   Alert Component Styles
+───────────────────────────────────────── */
+.alert {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  animation: fadeIn 0.2s ease;
+}
+
+.alert--error {
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+  border-color: var(--color-error-border);
+}
+
+.alert--success {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success-border);
+}
+
+.alert--info {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border-color: #d8b4fe;
+}

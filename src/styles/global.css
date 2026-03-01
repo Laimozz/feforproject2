@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
+
+/* ─────────────────────────────────────────
+   CSS VARIABLES — Design Tokens
+───────────────────────────────────────── */
+:root {
+  /* Colors */
+  --color-bg:           #eef0f8;
+  --color-surface:      #ffffff;
+  --color-primary:      #3730a3;
+  --color-primary-dark: #312e81;
+  --color-primary-soft: #ede9fe;
+  --color-accent:       #7c3aed;
+  --color-accent-light: #f3e8ff;
+  --color-pink:         #ec4899;
+
+  --color-text:         #111827;
+  --color-text-sub:     #6b7280;
+  --color-text-muted:   #9ca3af;
+  --color-border:       #e5e7eb;
+  --color-input-bg:     #f9fafb;
+
+  --color-error-bg:     #fef2f2;
+  --color-error-text:   #dc2626;
+  --color-error-border: #fecaca;
+  --color-success-bg:   #f0fdf4;
+  --color-success-text: #16a34a;
+  --color-success-border:#bbf7d0;
+
+  /* Typography */
+  --font-main: 'Sora', sans-serif;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 40px;
+  --space-3xl: 48px;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 4px 40px rgba(109, 40, 217, 0.08);
+  --shadow-btn:  0 6px 20px rgba(55, 48, 163, 0.3);
+  --shadow-focus: 0 0 0 3px rgba(124, 58, 237, 0.08);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+}
+
+/* ─────────────────────────────────────────
+   RESET & BASE
+───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-main);
+}
+
+input {
+  font-family: var(--font-main);
+}
+
+/* ─────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+───────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

@@ -1,0 +1,133 @@
+/* ─────────────────────────────────────────
+   Register Page Styles
+───────────────────────────────────────── */
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+/* ── Page body (centers the card) ── */
+.register-page__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+}
+
+/* ── Card ── */
+.register-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeUp 0.45s cubic-bezier(0.22, 0.68, 0, 1.2) both;
+}
+
+/* ── Avatar icon ── */
+.register-card__avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--color-accent-light), var(--color-primary-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  flex-shrink: 0;
+}
+
+.register-card__avatar svg {
+  color: var(--color-accent);
+}
+
+/* ── Card headings ── */
+.register-card__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.register-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-sub);
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: var(--space-xl);
+}
+
+/* ── Form fields wrapper ── */
+.register-card__fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Agree checkbox row ── */
+.register-card__agree {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: var(--space-xs);
+}
+
+.register-card__agree input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.register-card__agree-text {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  line-height: 1.4;
+}
+
+.register-card__agree-text a {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-card__agree-text a:hover {
+  text-decoration: underline;
+}
+
+/* ── Footer link ── */
+.register-card__footer-link {
+  margin-top: var(--space-lg);
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  text-align: center;
+}
+
+.register-card__footer-link a {
+  color: var(--color-pink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-card__footer-link a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .register-card {
+    padding: var(--space-xl) var(--space-lg);
+  }
+}

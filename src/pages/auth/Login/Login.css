@@ -1,0 +1,130 @@
+/* ─────────────────────────────────────────
+   Login Page Styles
+───────────────────────────────────────── */
+
+/* ── Trang bao ngoài — có Navbar + Footer ── */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, #f5f7fa, #e4e9f2);
+  font-family: 'Sora', sans-serif;
+}
+
+/* ── Phần giữa căn giữa card ── */
+.login-page__body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+/* ── Card ── */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 44px 40px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 0.4s cubic-bezier(0.22, 0.68, 0, 1.2) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Heading ── */
+.login-card h2 {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+/* ── Subtitle ── */
+.login-card .subtitle {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+/* ── Alert ── */
+.login-card .alert {
+  margin-bottom: 16px;
+}
+
+/* ── Form: xếp dọc, gap rõ ràng giữa các field ── */
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── InputField full width ── */
+.login-card form .input-field {
+  width: 100%;
+}
+
+/* ── Button ── */
+.login-card form .btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  background: #3730a3;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.login-card form .btn:hover:not(:disabled) {
+  background: #312e81;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(55, 48, 163, 0.28);
+}
+
+.login-card form .btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-card form .btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Link cuối card ── */
+.bottom-text {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.bottom-text a {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px;
+  }
+}
