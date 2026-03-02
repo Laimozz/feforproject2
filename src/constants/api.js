@@ -37,4 +37,8 @@ export const ENDPOINTS = {
   // Admin
   ADMIN_USERS:      "/admin/users",
   ADMIN_USER_BY_ID: (id) => `/admin/users/${id}`,
+
+  //Admin Category
+  ADMIN_CATEGORIES: "/admin/categories",
+  ADMIN_CATEGORY_BY_ID:  (id) => `/admin/categories/${id}`,
 };

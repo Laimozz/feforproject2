@@ -25,3 +25,19 @@ export const getAdminUserById = (id) =>
  */
 export const deleteAdminUser = (id) =>
   axiosInstance.delete(ENDPOINTS.ADMIN_USER_BY_ID(id));
+
+/* ══════════════════════════════════════════════
+   Admin — Category APIs
+══════════════════════════════════════════════ */
+
+/** Tạo category mới — POST /admin/categories */
+export const createAdminCategory = (payload) =>
+  axiosInstance.post(ENDPOINTS.ADMIN_CATEGORIES, payload);
+
+/** Cập nhật category — PUT /admin/categories/{id} */
+export const updateAdminCategory = (id, payload) =>
+  axiosInstance.put(ENDPOINTS.ADMIN_CATEGORY_BY_ID(id), payload);
+
+/** Xóa category — DELETE /admin/categories/{id} */
+export const deleteAdminCategory = (id) =>
+  axiosInstance.delete(ENDPOINTS.ADMIN_CATEGORY_BY_ID(id));

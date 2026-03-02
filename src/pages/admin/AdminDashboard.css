@@ -534,3 +534,101 @@
   .admin__content { padding: 24px 16px; }
   .admin__stats   { grid-template-columns: 1fr; }
 }
+
+/* ─────────────────────────────────────────
+   CATEGORY FORM
+───────────────────────────────────────── */
+.admin__btn-create {
+  padding: 10px 22px;
+  background: #3730a3;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.admin__btn-create:hover {
+  background: #312e81;
+  transform: translateY(-1px);
+}
+
+.admin__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.admin__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin__form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.admin__form-input,
+.admin__form-textarea {
+  padding: 11px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  resize: vertical;
+}
+
+.admin__form-input::placeholder,
+.admin__form-textarea::placeholder { color: #94a3b8; }
+
+.admin__form-input:focus,
+.admin__form-textarea:focus {
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+}
+
+.admin__form-error {
+  padding: 10px 14px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.admin__form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.admin__form-submit {
+  flex: 1;
+  padding: 12px;
+  background: #3730a3;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.admin__form-submit:hover:not(:disabled) { background: #312e81; }
+.admin__form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
