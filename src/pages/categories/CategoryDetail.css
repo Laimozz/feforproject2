@@ -1,0 +1,70 @@
+/* ═══════════════════════════════════════════
+   Category Detail Page
+═══════════════════════════════════════════ */
+
+.cat-detail {
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header gọn ── */
+.cat-detail__hero {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 20px 0;
+}
+
+.cat-detail__back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; font-weight: 600;
+  color: #6366f1; text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.15s;
+}
+
+.cat-detail__back:hover { color: #3730a3; }
+
+.cat-detail__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 900; color: #0f172a;
+  line-height: 1.15; margin: 0;
+  text-align: center;
+}
+
+/* ── Products section ── */
+.cat-detail__main {
+  padding: 36px 0;
+  background: #fff;
+  flex: 1; /* đẩy footer xuống đáy */
+}
+
+/* ── Placeholder chờ API product ── */
+.cat-detail__placeholder {
+  background: #f8f9fc;
+  border: 2px dashed #e2e8f0;
+  border-radius: 16px;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.cat-detail__placeholder-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+.cat-detail__placeholder-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem; font-weight: 800;
+  color: #0f172a; margin-bottom: 8px;
+}
+
+.cat-detail__placeholder-desc {
+  font-size: 0.875rem; color: #64748b; line-height: 1.7;
+}
+
+/* ── Loading / Error ── */
+.cat-detail__loading, .cat-detail__error {
+  text-align: center; padding: 40px 20px;
+  font-size: 0.9rem; color: #94a3b8;
+}

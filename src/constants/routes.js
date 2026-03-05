@@ -11,4 +11,8 @@ export const ROUTES = {
   ORDERS:    "/orders",
   DASHBOARD: "/admin/dashboard",
   CHANGE_PASSWORD: "/change-password",
+
+  CATEGORIES:      "/categories",
+  CATEGORY_DETAIL: "/categories/:id",
+
 };

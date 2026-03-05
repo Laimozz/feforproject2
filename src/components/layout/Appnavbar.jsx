@@ -24,7 +24,7 @@ const IconDashboard = () => (
 /* ── Nav items config ── */
 const NAV_ITEMS = [
   { label: "Trang Chủ", to: ROUTES.HOME },
-  { label: "Mặt Hàng", to: ROUTES.PRODUCTS },
+  { label: "Mặt Hàng", to: ROUTES.CATEGORIES },
   { label: "Về Chúng Tôi", to: ROUTES.ABOUT },
   { label: "Liên Hệ", to: ROUTES.CONTACT },
 ];

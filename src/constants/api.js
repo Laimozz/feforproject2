@@ -18,6 +18,7 @@ export const ENDPOINTS = {
 
   // Category
   CATEGORIES:    "/categories",
+  CATEGORY_BY_ID: (id) => `/categories/${id}`,
 
   // Cart
   CART:          "/cart",
