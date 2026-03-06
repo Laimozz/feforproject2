@@ -1,66 +1,248 @@
+// =========================================================
+// CategoryDetail.jsx
+// Trang chi tiết 1 danh mục:
+//   - Lấy categoryId từ URL params (:id)
+//   - Hiển thị tên + mô tả danh mục
+//   - Hiển thị grid sản phẩm của danh mục đó (có phân trang)
+// =========================================================
+
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./CategoryDetail.css";
 import AppNavbar from "../../components/layout/AppNavbar";
 import { getCategoryById } from "../../api/categoryApi";
 import { ROUTES } from "../../constants/routes";
+import useProductsByCategory from "../../hooks/useProductsByCategory";
+
+/* ── Icon SVG: mũi tên trái / phải cho phân trang ── */
+const IconPrev = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+const IconNext = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
+/* ── Định dạng tiền Việt ── */
+const formatPrice = (price) =>
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 
 export default function CategoryDetail() {
-  const { id } = useParams();
+  const { id } = useParams(); // lấy categoryId từ URL /categories/:id
 
+  /* ── State thông tin danh mục ── */
   const [category, setCategory] = useState(null);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState("");
+  const [loadingCategory, setLoadingCategory] = useState(true);
+  const [categoryError, setCategoryError] = useState("");
 
+  /* ── Hook load sản phẩm theo category ── */
+  const {
+    products, totalPages, totalItems, page,
+    loading: loadingProducts, error: productError,
+    setPage,
+  } = useProductsByCategory(id);
+
+  /* Load thông tin category khi id thay đổi */
   useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
+    const fetchCategory = async () => {
+      setLoadingCategory(true);
+      setCategoryError("");
       try {
         const { data } = await getCategoryById(id);
         setCategory(data);
       } catch {
-        setError("Không tìm thấy danh mục này.");
+        setCategoryError("Không tìm thấy danh mục này.");
       } finally {
-        setLoading(false);
+        setLoadingCategory(false);
       }
     };
-    fetch();
-  }, [id]); // chạy lại khi id trên URL thay đổi
+    if (id) fetchCategory();
+  }, [id]);
 
   return (
     <div className="cat-detail">
       <AppNavbar />
 
-      {/* ── Header gọn — không màu ── */}
+      {/* ══════════════════════════════════════════════
+          HERO — tên danh mục + breadcrumb
+      ══════════════════════════════════════════════ */}
       <section className="cat-detail__hero">
         <div className="container">
+          {/* Breadcrumb: ← Tất Cả Danh Mục */}
           <Link to={ROUTES.CATEGORIES} className="cat-detail__back">
             ← Tất Cả Danh Mục
           </Link>
-          {!loading && !error && (
-            <h1 className="cat-detail__title">{category?.name}</h1>
+
+          {loadingCategory ? (
+            <div className="cat-detail__hero-loading">Đang tải...</div>
+          ) : categoryError ? (
+            <h1 className="cat-detail__title" style={{ color: "#ef4444" }}>
+              {categoryError}
+            </h1>
+          ) : (
+            <>
+              {/* Tên danh mục */}
+              <h1 className="cat-detail__title">{category?.name}</h1>
+              {/* Mô tả danh mục (nếu có) */}
+              {category?.description && (
+                <p className="cat-detail__desc">{category.description}</p>
+              )}
+              {/* Số lượng sản phẩm — hiển thị khi đã load xong */}
+              {!loadingProducts && (
+                <div className="cat-detail__count">
+                  {totalItems} sản phẩm
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
 
-      {/* ── Danh sách sản phẩm ── */}
-      {!loading && !error && (
-        <section className="cat-detail__main">
-          <div className="container">
-            {/* Placeholder — chờ API product
-                Sau khi có API: thay block này bằng grid product */}
-            <div className="cat-detail__placeholder">
-              <div className="cat-detail__placeholder-icon">🚧</div>
-              <div className="cat-detail__placeholder-title">
-                Sản Phẩm Đang Được Cập Nhật
-              </div>
-              <p className="cat-detail__placeholder-desc">
-                Danh sách sản phẩm sẽ hiển thị tại đây sau khi API product được tích hợp.
-              </p>
+      {/* ══════════════════════════════════════════════
+          PRODUCT GRID — danh sách sản phẩm
+      ══════════════════════════════════════════════ */}
+      <section className="cat-detail__main">
+        <div className="container">
+
+          {/* ── Trạng thái loading ── */}
+          {loadingProducts && (
+            <div className="cat-detail__state">
+              <div className="cat-detail__state-icon">⏳</div>
+              <p>Đang tải sản phẩm...</p>
             </div>
-          </div>
-        </section>
-      )}
+          )}
+
+          {/* ── Lỗi khi load sản phẩm ── */}
+          {!loadingProducts && productError && (
+            <div className="cat-detail__state">
+              <div className="cat-detail__state-icon">❌</div>
+              <p style={{ color: "#ef4444" }}>{productError}</p>
+            </div>
+          )}
+
+          {/* ── Không có sản phẩm ── */}
+          {!loadingProducts && !productError && products.length === 0 && (
+            <div className="cat-detail__state">
+              <div className="cat-detail__state-icon">📦</div>
+              <p>Danh mục này chưa có sản phẩm nào.</p>
+              <Link to={ROUTES.CATEGORIES} className="cat-detail__back-btn">
+                ← Xem danh mục khác
+              </Link>
+            </div>
+          )}
+
+          {/* ── Grid sản phẩm ── */}
+          {!loadingProducts && !productError && products.length > 0 && (
+            <>
+              {/* Grid card */}
+              <div className="product-grid">
+                {products.map((product) => (
+                  <div key={product.id} className="product-card">
+                    {/* Ảnh sản phẩm */}
+                    <div className="product-card__img-wrap">
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="product-card__img"
+                          /* Ẩn ảnh nếu URL lỗi */
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                            e.target.nextSibling.style.display = "flex";
+                          }}
+                        />
+                      ) : null}
+                      {/* Fallback placeholder khi không có ảnh / ảnh lỗi */}
+                      <div
+                        className="product-card__img-placeholder"
+                        style={{ display: product.imageUrl ? "none" : "flex" }}
+                      >
+                        📦
+                      </div>
+                    </div>
+
+                    {/* Nội dung card */}
+                    <div className="product-card__body">
+                      {/* Tên sản phẩm */}
+                      <h3 className="product-card__name">{product.name}</h3>
+
+                      {/* Mô tả (truncate 2 dòng) */}
+                      {product.description && (
+                        <p className="product-card__desc">{product.description}</p>
+                      )}
+
+                      {/* Footer: giá + tồn kho */}
+                      <div className="product-card__footer">
+                        <span className="product-card__price">
+                          {formatPrice(product.price)}
+                        </span>
+                        {/* Badge tồn kho */}
+                        <span
+                          className="product-card__stock"
+                          style={{
+                            /* Đỏ = hết hàng, cam = sắp hết, xanh = còn hàng */
+                            color: product.stock === 0
+                              ? "#ef4444"
+                              : product.stock <= 5
+                                ? "#f59e0b"
+                                : "#22c55e",
+                          }}
+                        >
+                          {product.stock === 0
+                            ? "Hết hàng"
+                            : product.stock <= 5
+                              ? `Còn ${product.stock}`
+                              : "Còn hàng"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── Phân trang — chỉ hiện khi có > 1 trang ── */}
+              {totalPages > 1 && (
+                <div className="cat-detail__pagination">
+                  {/* Nút Previous */}
+                  <button
+                    className="cat-detail__page-btn"
+                    onClick={() => setPage((p) => p - 1)}
+                    disabled={page === 0}
+                  >
+                    <IconPrev />
+                  </button>
+
+                  {/* Các số trang */}
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i}
+                      className={`cat-detail__page-btn ${i === page ? "cat-detail__page-btn--active" : ""
+                        }`}
+                      onClick={() => setPage(i)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  {/* Nút Next */}
+                  <button
+                    className="cat-detail__page-btn"
+                    onClick={() => setPage((p) => p + 1)}
+                    disabled={page === totalPages - 1}
+                  >
+                    <IconNext />
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
 
       {/* ── Footer ── */}
       <footer style={{

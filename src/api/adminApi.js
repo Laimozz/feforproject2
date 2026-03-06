@@ -41,3 +41,46 @@ export const updateAdminCategory = (id, payload) =>
 /** Xóa category — DELETE /admin/categories/{id} */
 export const deleteAdminCategory = (id) =>
   axiosInstance.delete(ENDPOINTS.ADMIN_CATEGORY_BY_ID(id));
+
+/* ══════════════════════════════════════════════
+   Admin — Product APIs
+   BE endpoints: POST/PUT/DELETE /api/admin/products
+                 GET /api/products (public, dùng được trong admin)
+══════════════════════════════════════════════ */
+
+/** Lấy danh sách tất cả sản phẩm có phân trang
+ *  BE trả về Page<ProductResponse>
+ *  @param {number} page  - trang hiện tại (bắt đầu từ 0)
+ *  @param {number} size  - số item mỗi trang
+ */
+export const getAdminProducts = (page = 0, size = 10) =>
+  axiosInstance.get(ENDPOINTS.PRODUCTS, { params: { page, size } });
+
+/** Tạo sản phẩm mới — POST /admin/products
+ *  @param {{ name, description, price, stock, imageUrl, categoryId }} payload
+ */
+export const createAdminProduct = (payload) =>
+  axiosInstance.post(ENDPOINTS.ADMIN_PRODUCTS, payload);
+
+/** Cập nhật sản phẩm — PUT /admin/products/{id}
+ *  @param {number} id
+ *  @param {{ name, description, price, stock, imageUrl, categoryId }} payload
+ */
+export const updateAdminProduct = (id, payload) =>
+  axiosInstance.put(ENDPOINTS.ADMIN_PRODUCT_BY_ID(id), payload);
+
+/** Xóa sản phẩm — DELETE /admin/products/{id}
+ *  @param {number} id
+ */
+export const deleteAdminProduct = (id) =>
+  axiosInstance.delete(ENDPOINTS.ADMIN_PRODUCT_BY_ID(id));
+
+
+/** Lấy sản phẩm theo danh mục — GET /products/category/{categoryId}
+ *  BE trả về Page<ProductResponse>
+ *  @param {number} categoryId
+ *  @param {number} page
+ *  @param {number} size
+ */
+export const getAdminProductsByCategory = (categoryId, page = 0, size = 10) =>
+  axiosInstance.get(ENDPOINTS.PRODUCTS_BY_CATEGORY(categoryId), { params: { page, size } });
