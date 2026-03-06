@@ -18,7 +18,7 @@ import {
 } from "../api/adminApi";
 import { getCategories } from "../api/categoryApi"; // dùng để render select category trong form
 
-const PAGE_SIZE = 10; // số sản phẩm mỗi trang
+const PAGE_SIZE = 8; // số sản phẩm mỗi trang
 
 // Giá trị mặc định của form — dùng khi mở tạo mới
 const EMPTY_FORM = {
