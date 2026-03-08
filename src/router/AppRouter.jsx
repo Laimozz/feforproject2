@@ -18,6 +18,10 @@ import AppNavbar from "../components/layout/Appnavbar";
 
 import CategoriesPage from "../pages/categories/CategoriesPage";
 import CategoryDetail from "../pages/categories/CategoryDetail";
+import CartPage from "../pages/cart/CartPage";
+import ProductDetail from "../pages/products/ProductDetail";
+
+
 
 /* ── Placeholder — trang chưa xây dựng ── */
 const PlaceholderPage = ({ title }) => (
@@ -73,6 +77,7 @@ export default function AppRouter() {
 
       <Route path={ROUTES.CATEGORIES} element={<CategoriesPage />} />
       <Route path={ROUTES.CATEGORY_DETAIL} element={<CategoryDetail />} />
+      <Route path={ROUTES.PRODUCT_DETAIL} element={<ProductDetail />} />
 
       <Route path={ROUTES.ABOUT} element={<About title="Về Chúng Tôi" />} />
       <Route path={ROUTES.CONTACT} element={<Contact title="Liên Hệ" />} />
@@ -112,6 +117,14 @@ export default function AppRouter() {
         element={
           <ProtectedRoute requiredRole="USER">
             <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path={ROUTES.CART}
+        element={
+          <ProtectedRoute requiredRole="USER">
+            <CartPage />
           </ProtectedRoute>
         }
       />

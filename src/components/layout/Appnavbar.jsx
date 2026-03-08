@@ -4,6 +4,7 @@ import "./AppNavbar.css";
 import { useAuth } from "../../context/AuthContext";
 import { ROUTES } from "../../constants/routes";
 
+
 /* ── Icons ── */
 const IconUser = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
 const IconLogout = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
@@ -14,12 +15,21 @@ const IconLock = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="non
 const IconDashboard = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="7"/>
-    <rect x="14" y="3" width="7" height="7"/>
-    <rect x="14" y="14" width="7" height="7"/>
-    <rect x="3" y="14" width="7" height="7"/>
+    <rect x="3" y="3" width="7" height="7" />
+    <rect x="14" y="3" width="7" height="7" />
+    <rect x="14" y="14" width="7" height="7" />
+    <rect x="3" y="14" width="7" height="7" />
   </svg>
 );
+
+const IconCartNav = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+  </svg>
+);
+
 
 /* ── Nav items config ── */
 const NAV_ITEMS = [
@@ -31,6 +41,8 @@ const NAV_ITEMS = [
 
 export default function AppNavbar() {
   const { user, logout } = useAuth();
+
+
   const location = useLocation();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
@@ -103,83 +115,94 @@ export default function AppNavbar() {
             </>
           ) : (
             /* Đã login — hiện user menu */
-            <div className="appnav__user" ref={dropRef}>
-              <button
-                className="appnav__user-btn"
-                onClick={() => setDropOpen((v) => !v)}
-                aria-expanded={dropOpen}
-              >
-                <div className="appnav__avatar">{avatarChar}</div>
-                <span className="appnav__user-name">{user.username}</span>
-                <span className={`appnav__chevron ${dropOpen ? "appnav__chevron--open" : ""}`}>
-                  <IconChevron />
-                </span>
-              </button>
+            <>
+              {
+                user.role === "USER" && (
+                  <Link to={ROUTES.CART} className="appnav__cart-link" title="Giỏ hàng">
+                    <IconCartNav />
+                  </Link>
+                )
+              }
 
-              {dropOpen && (
-                <div className="appnav__dropdown">
-                  {/* Header */}
-                  <div className="appnav__dropdown-header">
-                    <div className="appnav__dropdown-name">{user.username}</div>
-                    <div className="appnav__dropdown-role">
-                      {user.role === "ADMIN" ? "Quản trị viên" : "Thành viên"}
+
+              <div className="appnav__user" ref={dropRef}>
+                <button
+                  className="appnav__user-btn"
+                  onClick={() => setDropOpen((v) => !v)}
+                  aria-expanded={dropOpen}
+                >
+                  <div className="appnav__avatar">{avatarChar}</div>
+                  <span className="appnav__user-name">{user.username}</span>
+                  <span className={`appnav__chevron ${dropOpen ? "appnav__chevron--open" : ""}`}>
+                    <IconChevron />
+                  </span>
+                </button>
+
+                {dropOpen && (
+                  <div className="appnav__dropdown">
+                    {/* Header */}
+                    <div className="appnav__dropdown-header">
+                      <div className="appnav__dropdown-name">{user.username}</div>
+                      <div className="appnav__dropdown-role">
+                        {user.role === "ADMIN" ? "Quản trị viên" : "Thành viên"}
+                      </div>
                     </div>
+
+                    {user.role === "USER" && (
+                      <>
+                        {/* Xem hồ sơ */}
+                        <Link
+                          to={ROUTES.PROFILE}
+                          className="appnav__dropdown-item"
+                          onClick={() => setDropOpen(false)}
+                        >
+                          <IconUser /> Hồ Sơ Của Tôi
+                        </Link>
+
+                        {/* Chỉnh sửa hồ sơ */}
+                        <Link
+                          to={ROUTES.EDITPROFILE}
+                          className="appnav__dropdown-item"
+                          onClick={() => setDropOpen(false)}
+                        >
+                          <IconEdit /> Chỉnh Sửa Hồ Sơ
+                        </Link>
+
+                        {/* Đổi mật khẩu */}
+                        <Link
+                          to={ROUTES.CHANGE_PASSWORD}
+                          className="appnav__dropdown-item"
+                          onClick={() => setDropOpen(false)}
+                        >
+                          <IconLock /> Đổi Mật Khẩu
+                        </Link>
+
+                        <div className="appnav__dropdown-divider" />
+
+                      </>)}
+
+                    {/* ── Nếu là ADMIN → hiện nút Dashboard ── */}
+                    {user.role === "ADMIN" && (
+                      <>
+                        <Link to={ROUTES.DASHBOARD} className="appnav__dropdown-item"
+                          onClick={() => setDropOpen(false)}>
+                          <IconDashboard /> Trang Quản Trị
+                        </Link>
+                        <div className="appnav__dropdown-divider" />
+                      </>
+                    )}
+
+                    {/* Đăng xuất */}
+                    <button
+                      className="appnav__dropdown-item appnav__dropdown-item--danger"
+                      onClick={handleLogout}
+                    >
+                      <IconLogout /> Đăng Xuất
+                    </button>
                   </div>
-
-                  {user.role === "USER" && (
-      <>
-                  {/* Xem hồ sơ */}
-                  <Link
-                    to={ROUTES.PROFILE}
-                    className="appnav__dropdown-item"
-                    onClick={() => setDropOpen(false)}
-                  >
-                    <IconUser /> Hồ Sơ Của Tôi
-                  </Link>
-
-                  {/* Chỉnh sửa hồ sơ */}
-                  <Link
-                    to={ROUTES.EDITPROFILE}
-                    className="appnav__dropdown-item"
-                    onClick={() => setDropOpen(false)}
-                  >
-                    <IconEdit /> Chỉnh Sửa Hồ Sơ
-                  </Link>
-
-                  {/* Đổi mật khẩu */}
-                  <Link
-                    to={ROUTES.CHANGE_PASSWORD}
-                    className="appnav__dropdown-item"
-                    onClick={() => setDropOpen(false)}
-                  >
-                    <IconLock /> Đổi Mật Khẩu
-                  </Link>
-
-                  <div className="appnav__dropdown-divider" />
-
-                  </>)}
-
-                  {/* ── Nếu là ADMIN → hiện nút Dashboard ── */}
-                  {user.role === "ADMIN" && (
-                    <>
-                      <Link to={ROUTES.DASHBOARD} className="appnav__dropdown-item"
-                        onClick={() => setDropOpen(false)}>
-                        <IconDashboard /> Trang Quản Trị
-                      </Link>
-                      <div className="appnav__dropdown-divider" />
-                    </>
-                  )}
-
-                  {/* Đăng xuất */}
-                  <button
-                    className="appnav__dropdown-item appnav__dropdown-item--danger"
-                    onClick={handleLogout}
-                  >
-                    <IconLogout /> Đăng Xuất
-                  </button>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </>
           )}
         </div>
 

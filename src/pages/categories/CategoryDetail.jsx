@@ -142,7 +142,12 @@ export default function CategoryDetail() {
               {/* Grid card */}
               <div className="product-grid">
                 {products.map((product) => (
-                  <div key={product.id} className="product-card">
+                  <Link
+                    key={product.id}
+                    to={`/products/${product.id}`}
+                    className="product-card"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                     {/* Ảnh sản phẩm */}
                     <div className="product-card__img-wrap">
                       {product.imageUrl ? (
@@ -150,14 +155,12 @@ export default function CategoryDetail() {
                           src={product.imageUrl}
                           alt={product.name}
                           className="product-card__img"
-                          /* Ẩn ảnh nếu URL lỗi */
                           onError={(e) => {
                             e.target.style.display = "none";
                             e.target.nextSibling.style.display = "flex";
                           }}
                         />
                       ) : null}
-                      {/* Fallback placeholder khi không có ảnh / ảnh lỗi */}
                       <div
                         className="product-card__img-placeholder"
                         style={{ display: product.imageUrl ? "none" : "flex" }}
@@ -165,27 +168,19 @@ export default function CategoryDetail() {
                         📦
                       </div>
                     </div>
-
                     {/* Nội dung card */}
                     <div className="product-card__body">
-                      {/* Tên sản phẩm */}
                       <h3 className="product-card__name">{product.name}</h3>
-
-                      {/* Mô tả (truncate 2 dòng) */}
                       {product.description && (
                         <p className="product-card__desc">{product.description}</p>
                       )}
-
-                      {/* Footer: giá + tồn kho */}
                       <div className="product-card__footer">
                         <span className="product-card__price">
                           {formatPrice(product.price)}
                         </span>
-                        {/* Badge tồn kho */}
                         <span
                           className="product-card__stock"
                           style={{
-                            /* Đỏ = hết hàng, cam = sắp hết, xanh = còn hàng */
                             color: product.stock === 0
                               ? "#ef4444"
                               : product.stock <= 5
@@ -201,7 +196,7 @@ export default function CategoryDetail() {
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
