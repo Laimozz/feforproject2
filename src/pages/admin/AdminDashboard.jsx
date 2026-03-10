@@ -6,6 +6,7 @@ import useAdminCategories from "../../hooks/useAdminCategories";
 
 // Thêm import hook sản phẩm vào danh sách import hiện có
 import useAdminProducts from "../../hooks/useAdminProducts";
+import useAdminOrders from "../../hooks/useAdminOrders";
 
 
 /* ── Icons ── */
@@ -773,6 +774,314 @@ function ProductSection() {
   );
 }
 
+/* ══════════════════════════════════════════════
+   SECTION: Quản lý Đơn Hàng
+══════════════════════════════════════════════ */
+
+/* Mapping trạng thái → label + CSS class */
+const STATUS_MAP = {
+  PENDING: { label: "Chờ xác nhận", cls: "admin-badge--pending" },
+  CONFIRMED: { label: "Đã xác nhận", cls: "admin-badge--confirmed" },
+  SHIPPING: { label: "Đang giao", cls: "admin-badge--shipping" },
+  DELIVERED: { label: "Đã giao", cls: "admin-badge--delivered" },
+  CANCELLED: { label: "Đã hủy", cls: "admin-badge--cancelled" },
+};
+
+/* Trạng thái tiếp theo có thể chuyển sang */
+const NEXT_STATUSES = {
+  PENDING: ["CONFIRMED", "CANCELLED"],
+  CONFIRMED: ["SHIPPING", "CANCELLED"],
+  SHIPPING: ["DELIVERED"],
+  DELIVERED: [],
+  CANCELLED: [],
+};
+
+const formatPrice = (price) =>
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
+
+const formatDate = (dateStr) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("vi-VN", {
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit",
+  });
+};
+
+function OrderSection() {
+  const {
+    orders, totalPages, totalItems, page, statusFilter,
+    loadingList, setPage, handleStatusFilter,
+    viewOrder, loadingView, openView, closeView,
+    statusTarget, newStatus, loadingStatus, statusError,
+    setNewStatus, openStatusModal, closeStatusModal, confirmUpdateStatus,
+  } = useAdminOrders();
+
+  const STATUS_OPTIONS = ["", "PENDING", "CONFIRMED", "SHIPPING", "DELIVERED", "CANCELLED"];
+
+  return (
+    <>
+      {/* ── Stat cards ── */}
+      <div className="admin__stats" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+        <div className="admin-stat">
+          <div className="admin-stat__icon" style={{ background: "#fff7ed" }}>📋</div>
+          <div>
+            <div className="admin-stat__num">{totalItems}</div>
+            <div className="admin-stat__label">Tổng Đơn Hàng</div>
+          </div>
+        </div>
+        <div className="admin-stat">
+          <div className="admin-stat__icon" style={{ background: "#eef2ff" }}>📦</div>
+          <div>
+            <div className="admin-stat__num">{orders.length}</div>
+            <div className="admin-stat__label">Trên Trang Này</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Toolbar: lọc theo trạng thái ── */}
+      <div className="admin__toolbar">
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b", whiteSpace: "nowrap" }}>
+            Trạng thái:
+          </label>
+          <select
+            value={statusFilter}
+            onChange={(e) => handleStatusFilter(e.target.value)}
+            style={{
+              padding: "8px 36px 8px 14px",
+              borderRadius: 10,
+              border: "1.5px solid #e2e8f0",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "#0f172a",
+              background: "#fff",
+              cursor: "pointer",
+              outline: "none",
+              appearance: "none",
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 12px center",
+              minWidth: 180,
+            }}
+          >
+            <option value="">— Tất Cả —</option>
+            {STATUS_OPTIONS.filter(Boolean).map((s) => (
+              <option key={s} value={s}>{STATUS_MAP[s]?.label || s}</option>
+            ))}
+          </select>
+
+          <span className="admin__total">{totalItems} đơn hàng</span>
+        </div>
+
+        {statusFilter && (
+          <button
+            onClick={() => handleStatusFilter("")}
+            style={{
+              padding: "7px 16px", borderRadius: 8,
+              border: "1.5px solid #e2e8f0", background: "#fff",
+              fontSize: "0.8rem", fontWeight: 600, color: "#64748b", cursor: "pointer",
+            }}
+          >
+            ✕ Xóa lọc
+          </button>
+        )}
+      </div>
+
+      {/* ── Bảng danh sách đơn hàng ── */}
+      <div className="admin__table-wrap">
+        {loadingList ? (
+          <div className="admin__loading">⏳ Đang tải dữ liệu...</div>
+        ) : orders.length === 0 ? (
+          <div className="admin__empty">
+            <div className="admin__empty-icon">📋</div>
+            Không có đơn hàng nào
+          </div>
+        ) : (
+          <table className="admin__table">
+            <thead>
+              <tr>
+                <th>Mã ĐH</th>
+                <th>Khách Hàng</th>
+                <th>Ngày Đặt</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => {
+                const st = STATUS_MAP[order.status] || { label: order.status, cls: "" };
+                return (
+                  <tr key={order.id}>
+                    <td style={{ color: "#94a3b8", fontSize: "0.8rem" }}>#{order.id}</td>
+                    <td style={{ fontWeight: 600, color: "#0f172a" }}>{order.username}</td>
+                    <td style={{ color: "#64748b", fontSize: "0.85rem" }}>{formatDate(order.orderDate)}</td>
+                    <td style={{ fontWeight: 600, color: "#0f172a" }}>{formatPrice(order.totalPrice)}</td>
+                    <td>
+                      <span className={`admin-badge ${st.cls}`}>{st.label}</span>
+                    </td>
+                    <td>
+                      <div className="admin__action-btns">
+                        <button className="admin__btn-view" onClick={() => openView(order.id)}>Chi Tiết</button>
+                        {NEXT_STATUSES[order.status]?.length > 0 && (
+                          <button className="admin__btn-status" onClick={() => openStatusModal(order)}>
+                            Cập Nhật
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="admin__pagination">
+            <button className="admin__page-btn" onClick={() => setPage((p) => p - 1)} disabled={page === 0}><IconPrev /></button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button key={i} className={`admin__page-btn ${i === page ? "admin__page-btn--active" : ""}`} onClick={() => setPage(i)}>{i + 1}</button>
+            ))}
+            <button className="admin__page-btn" onClick={() => setPage((p) => p + 1)} disabled={page === totalPages - 1}><IconNext /></button>
+          </div>
+        )}
+      </div>
+
+      {/* ── Modal chi tiết đơn hàng ── */}
+      {viewOrder && (
+        <div className="admin__modal-overlay" onClick={closeView}>
+          <div className="admin__modal admin__modal--wide" onClick={(e) => e.stopPropagation()}>
+            <div className="admin__modal-header">
+              <div className="admin__modal-title">Chi Tiết Đơn Hàng</div>
+              <button className="admin__modal-close" onClick={closeView}>✕</button>
+            </div>
+            {viewOrder === "loading" || loadingView ? (
+              <div className="admin__loading">⏳ Đang tải...</div>
+            ) : (
+              <>
+                {/* Thông tin chung */}
+                <div className="admin__modal-rows">
+                  {[
+                    { label: "Mã ĐH", value: `#${viewOrder.id}` },
+                    { label: "Khách hàng", value: viewOrder.username },
+                    { label: "Ngày đặt", value: formatDate(viewOrder.orderDate) },
+                    { label: "Địa chỉ", value: viewOrder.shippingAddress },
+                    { label: "SĐT", value: viewOrder.phone },
+                    { label: "Ghi chú", value: viewOrder.note || "—" },
+                    {
+                      label: "Trạng thái",
+                      value: (
+                        <span className={`admin-badge ${(STATUS_MAP[viewOrder.status] || {}).cls}`}>
+                          {(STATUS_MAP[viewOrder.status] || {}).label || viewOrder.status}
+                        </span>
+                      ),
+                    },
+                    { label: "Tổng tiền", value: formatPrice(viewOrder.totalPrice) },
+                  ].map((row) => (
+                    <div key={row.label} className="admin__modal-row">
+                      <span className="admin__modal-row-label">{row.label}</span>
+                      <span className="admin__modal-row-value">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Danh sách sản phẩm */}
+                {viewOrder.items && viewOrder.items.length > 0 && (
+                  <div style={{ marginTop: 20 }}>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#374151", marginBottom: 10 }}>
+                      Sản phẩm ({viewOrder.items.length})
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {viewOrder.items.map((item) => (
+                        <div key={item.id} style={{
+                          display: "flex", alignItems: "center", gap: 12,
+                          padding: "10px 14px", background: "#f8fafc", borderRadius: 10,
+                        }}>
+                          {item.productImageUrl ? (
+                            <img src={item.productImageUrl} alt={item.productName}
+                              style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 8 }}
+                              onError={(e) => { e.target.style.display = "none"; }}
+                            />
+                          ) : (
+                            <div style={{
+                              width: 40, height: 40, background: "#e2e8f0", borderRadius: 8,
+                              display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem",
+                            }}>📦</div>
+                          )}
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontWeight: 600, fontSize: "0.85rem", color: "#0f172a" }}>{item.productName}</div>
+                            <div style={{ fontSize: "0.78rem", color: "#94a3b8" }}>x{item.quantity}</div>
+                          </div>
+                          <div style={{ fontWeight: 600, fontSize: "0.85rem", color: "#0f172a" }}>
+                            {formatPrice(item.price * item.quantity)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal cập nhật trạng thái ── */}
+      {statusTarget && (
+        <div className="admin__modal-overlay" onClick={closeStatusModal}>
+          <div className="admin__modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin__modal-header">
+              <div className="admin__modal-title">Cập Nhật Trạng Thái</div>
+              <button className="admin__modal-close" onClick={closeStatusModal}>✕</button>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: 6 }}>Trạng thái hiện tại:</div>
+              <span className={`admin-badge ${(STATUS_MAP[statusTarget.currentStatus] || {}).cls}`}>
+                {(STATUS_MAP[statusTarget.currentStatus] || {}).label || statusTarget.currentStatus}
+              </span>
+            </div>
+
+            {statusError && (
+              <div className="admin__form-error">⚠️ {statusError}</div>
+            )}
+
+            <div className="admin__form">
+              <div className="admin__form-field">
+                <label className="admin__form-label">Chuyển sang trạng thái:</label>
+                <select
+                  className="admin__form-input"
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                >
+                  <option value="">— Chọn trạng thái —</option>
+                  {(NEXT_STATUSES[statusTarget.currentStatus] || []).map((s) => (
+                    <option key={s} value={s}>{STATUS_MAP[s]?.label || s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="admin__form-actions">
+                <button className="admin__confirm-cancel" onClick={closeStatusModal}>Hủy</button>
+                <button
+                  className="admin__form-submit"
+                  onClick={confirmUpdateStatus}
+                  disabled={!newStatus || loadingStatus}
+                >
+                  {loadingStatus ? "Đang cập nhật..." : "Xác nhận"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+
 
 /* ══════════════════════════════════════════════
    MAIN: AdminDashboard
@@ -787,6 +1096,7 @@ export default function AdminDashboard() {
     { key: "users", label: "👥 Quản Lý User" },
     { key: "categories", label: "🗂️ Quản Lý Danh Mục" },
     { key: "products", label: "📦 Quản Lý Sản Phẩm" },
+    { key: "orders", label: "📋 Quản Lý Đơn Hàng" },
   ];
 
   return (
@@ -816,18 +1126,16 @@ export default function AdminDashboard() {
           <div className="admin__page-header">
             <div>
               <div className="admin__page-title">
-                {activeTab === "users"
-                  ? "Quản Lý Người Dùng"
-                  : activeTab === "categories"
-                    ? "Quản Lý Danh Mục"
-                    : "Quản Lý Sản Phẩm"}
+                {activeTab === "users" ? "Quản Lý Người Dùng"
+                  : activeTab === "categories" ? "Quản Lý Danh Mục"
+                    : activeTab === "products" ? "Quản Lý Sản Phẩm"
+                      : "Quản Lý Đơn Hàng"}
               </div>
               <div className="admin__page-sub">
-                {activeTab === "users"
-                  ? "Xem, tìm kiếm và quản lý tài khoản người dùng"
-                  : activeTab === "categories"
-                    ? "Tạo mới, chỉnh sửa và xóa danh mục sản phẩm"
-                    : "Tạo mới, chỉnh sửa và xóa sản phẩm"}
+                {activeTab === "users" ? "Xem, tìm kiếm và quản lý tài khoản người dùng"
+                  : activeTab === "categories" ? "Tạo mới, chỉnh sửa và xóa danh mục sản phẩm"
+                    : activeTab === "products" ? "Tạo mới, chỉnh sửa và xóa sản phẩm"
+                      : "Xem, cập nhật trạng thái và quản lý đơn hàng"}
               </div>
             </div>
           </div>
@@ -836,6 +1144,7 @@ export default function AdminDashboard() {
           {activeTab === "users" && <UserSection />}
           {activeTab === "categories" && <CategorySection />}
           {activeTab === "products" && <ProductSection />}
+          {activeTab === "orders" && <OrderSection />}
 
         </main>
       </div>

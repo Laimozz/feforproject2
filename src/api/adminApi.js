@@ -84,3 +84,28 @@ export const deleteAdminProduct = (id) =>
  */
 export const getAdminProductsByCategory = (categoryId, page = 0, size = 10) =>
   axiosInstance.get(ENDPOINTS.PRODUCTS_BY_CATEGORY(categoryId), { params: { page, size } });
+
+
+/* ══════════════════════════════════════════════
++   Admin — Order APIs
++   BE endpoints: GET/PUT /api/admin/orders
++══════════════════════════════════════════════ */
+
+/** Lấy danh sách tất cả đơn hàng có phân trang + lọc theo status
++ *  @param {number} page
++ *  @param {number} size
++ *  @param {string} status - PENDING | CONFIRMED | SHIPPING | DELIVERED | CANCELLED
++ */
+export const getAdminOrders = (page = 0, size = 10, status = "") =>
+  axiosInstance.get(ENDPOINTS.ADMIN_ORDERS, {
+    params: { page, size, ...(status && { status }) },
+  });
+
+/** Xem chi tiết 1 đơn hàng — GET /admin/orders/{id} */
+export const getAdminOrderById = (id) =>
+  axiosInstance.get(ENDPOINTS.ADMIN_ORDER_BY_ID(id));
+
+/** Cập nhật trạng thái đơn hàng — PUT /admin/orders/{id}/status */
+export const updateAdminOrderStatus = (id, status) =>
+  axiosInstance.put(ENDPOINTS.ADMIN_ORDER_STATUS(id), { status });
+

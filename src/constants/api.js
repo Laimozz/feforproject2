@@ -48,4 +48,15 @@ export const ENDPOINTS = {
   //Admin Product
   ADMIN_PRODUCTS: "/admin/products",
   ADMIN_PRODUCT_BY_ID: (id) => `/admin/products/${id}`,
+
+
+  //Admin Product
+  ADMIN_PRODUCTS: "/admin/products",
+  ADMIN_PRODUCT_BY_ID: (id) => `/admin/products/${id}`,
+
+  // Admin Order
+  ADMIN_ORDERS: "/admin/orders",
+  ADMIN_ORDER_BY_ID: (id) => `/admin/orders/${id}`,
+  ADMIN_ORDER_STATUS: (id) => `/admin/orders/${id}/status`,
+
 };

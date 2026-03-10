@@ -749,3 +749,49 @@ select.admin__form-input {
   /* bỏ style mặc định browser */
   cursor: pointer;
 }
+
+/* ─────────────────────────────────────────
+   ORDER STATUS BADGES
+───────────────────────────────────────── */
+.admin-badge--pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-badge--confirmed {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.admin-badge--shipping {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.admin-badge--delivered {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.admin-badge--cancelled {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Nút "Cập Nhật" trạng thái */
+.admin__btn-status {
+  padding: 6px 14px;
+  background: #fff7ed;
+  color: #c2410c;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.admin__btn-status:hover {
+  background: #ffedd5;
+}
