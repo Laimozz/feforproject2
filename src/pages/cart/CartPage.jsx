@@ -226,6 +226,12 @@ export default function CartPage() {
                                     </span>
                                 </div>
 
+                                {/* Nút Thanh Toán */}
+                                <Link to={ROUTES.CHECKOUT} className="cart-summary__checkout-btn">
+                                    💳 Tiến hành thanh toán
+                                </Link>
+
+
                                 {/* Nút xóa toàn bộ */}
                                 <button
                                     className="cart-summary__clear-btn"

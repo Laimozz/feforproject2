@@ -21,6 +21,10 @@ import CategoryDetail from "../pages/categories/CategoryDetail";
 import CartPage from "../pages/cart/CartPage";
 import ProductDetail from "../pages/products/ProductDetail";
 
+import Checkout from "../pages/order/Checkout";
+import OrderHistory from "../pages/order/OrderHistory";
+import OrderDetail from "../pages/order/OrderDetail";
+
 
 
 /* ── Placeholder — trang chưa xây dựng ── */
@@ -125,6 +129,31 @@ export default function AppRouter() {
         element={
           <ProtectedRoute requiredRole="USER">
             <CartPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ── [THÊM MỚI] Flow Đơn hàng ── */}
+      <Route path={ROUTES.CHECKOUT}
+        element={
+          <ProtectedRoute requiredRole="USER">
+            <Checkout />
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route path={ROUTES.ORDERS}
+        element={
+          <ProtectedRoute requiredRole="USER">
+            <OrderHistory />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path={ROUTES.ORDER_DETAIL}
+        element={
+          <ProtectedRoute requiredRole="USER">
+            <OrderDetail />
           </ProtectedRoute>
         }
       />

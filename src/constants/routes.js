@@ -11,7 +11,12 @@ export const ROUTES = {
 
 
   CART: "/cart",
+
   ORDERS: "/orders",
+  ORDER_DETAIL: "/orders/:id", // <-- THÊM DÒNG NÀY
+  CHECKOUT: "/checkout",       // <-- THÊM DÒNG NÀY
+
+
   DASHBOARD: "/admin/dashboard",
   CHANGE_PASSWORD: "/change-password",
 
