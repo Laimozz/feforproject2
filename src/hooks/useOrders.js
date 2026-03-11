@@ -1,6 +1,7 @@
 // Vị trí: src/hooks/useOrders.js
 import { useState, useCallback } from "react";
 import { getMyOrders, getOrderById, checkoutOrder, cancelOrder } from "../api/orderApi";
+import { createPayment } from "../api/paymentApi";
 
 export default function useOrders() {
   const [orders, setOrders] = useState([]);
@@ -41,6 +42,21 @@ export default function useOrders() {
     } finally { setLoading(false); }
   }, []);
 
+  /**
+   * Tạo URL thanh toán VNPay cho 1 đơn hàng
+   * Trả về paymentUrl để redirect
+   */
+  const createVnPayPayment = useCallback(async (orderId) => {
+    setLoading(true); setError("");
+    try {
+      const { data } = await createPayment(orderId);
+      return data.paymentUrl;
+    } catch (err) {
+      setError("Không thể tạo liên kết thanh toán VNPay.");
+      throw err;
+    } finally { setLoading(false); }
+  }, []);
+
   const handleCancelOrder = useCallback(async (id) => {
     setLoading(true); setError("");
     try {
@@ -53,5 +69,9 @@ export default function useOrders() {
     } finally { setLoading(false); }
   }, [fetchOrders]);
 
-  return { orders, currentOrder, loading, error, fetchOrders, fetchOrderDetail, createOrder, handleCancelOrder };
+  return {
+    orders, currentOrder, loading, error,
+    fetchOrders, fetchOrderDetail, createOrder,
+    createVnPayPayment, handleCancelOrder,
+  };
 }

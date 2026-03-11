@@ -16,6 +16,9 @@ export const ROUTES = {
   ORDER_DETAIL: "/orders/:id", // <-- THÊM DÒNG NÀY
   CHECKOUT: "/checkout",       // <-- THÊM DÒNG NÀY
 
+  // Payment
+  PAYMENT_RESULT: "/payment/result",
+
 
   DASHBOARD: "/admin/dashboard",
   CHANGE_PASSWORD: "/change-password",

@@ -14,12 +14,26 @@ const formatPrice = (price) => {
 
 // Đổi màu badge status
 const getStatusClass = (status) => {
-  switch (status?.toLowerCase()) {
-    case 'pending': return 'pending';
-    case 'processing': return 'processing';
-    case 'completed': return 'completed';
-    case 'cancelled': return 'cancelled';
-    default: return 'pending';
+  switch (status?.toUpperCase()) {
+    case 'PENDING':          return 'pending';
+    case 'AWAITING_PAYMENT': return 'awaiting';
+    case 'CONFIRMED':        return 'processing';
+    case 'SHIPPING':         return 'processing';
+    case 'DELIVERED':        return 'completed';
+    case 'CANCELLED':        return 'cancelled';
+    default:                 return 'pending';
+  }
+};
+
+const getStatusLabel = (status) => {
+  switch (status?.toUpperCase()) {
+    case 'PENDING':          return 'Chờ xác nhận';
+    case 'AWAITING_PAYMENT': return 'Chờ thanh toán';
+    case 'CONFIRMED':        return 'Đã xác nhận';
+    case 'SHIPPING':         return 'Đang giao';
+    case 'DELIVERED':        return 'Đã giao';
+    case 'CANCELLED':        return 'Đã hủy';
+    default:                 return status;
   }
 };
 
@@ -62,6 +76,7 @@ export default function OrderHistory() {
                   <th>Mã Đơn</th>
                   <th>Ngày đặt</th>
                   <th>Tổng tiền</th>
+                  <th>Thanh toán</th>
                   <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
@@ -75,14 +90,19 @@ export default function OrderHistory() {
                         {formatPrice(order.totalPrice)}
                     </td>
                     <td>
+                      <span className={`badge ${order.paymentMethod === "VNPAY" ? "vnpay" : "cod"}`}>
+                        {order.paymentMethod === "VNPAY" ? "VNPay" : "COD"}
+                      </span>
+                    </td>
+                    <td>
                         <span className={`badge ${getStatusClass(order.status)}`}>
-                            {order.status}
+                            {getStatusLabel(order.status)}
                         </span>
                     </td>
                     <td>
                       <div className="action-links">
                           <Link to={`/orders/${order.id}`} className="btn-link">Xem chi tiết</Link>
-                          {order.status === "PENDING" && (
+                          {(order.status === "PENDING" || order.status === "AWAITING_PAYMENT") && (
                             <button className="btn-cancel" onClick={() => onCancelClick(order.id)}>
                                 Hủy Đơn
                             </button>

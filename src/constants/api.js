@@ -31,9 +31,9 @@ export const ENDPOINTS = {
   ORDER_BY_ID: (id) => `/orders/${id}`,
   CHECKOUT: "/orders/checkout",
 
-  // Payment
-  PAYMENT: "/payment/pay",
-
+   // Payment (VNPay)
+  PAYMENT_CREATE: "/payment/create",
+  
   // Upload
   UPLOAD: "/admin/upload",
 

@@ -285,3 +285,75 @@
     background: var(--color-primary-dark);
     transform: translateY(-2px);
 }
+
+/* ── Payment Method Selector ── */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.payment-option:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.payment-option--active {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.payment-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.payment-option__icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.payment-option__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.payment-option__text strong {
+    font-size: 0.95rem;
+    color: var(--color-text);
+}
+
+.payment-option__text small {
+    font-size: 0.82rem;
+    color: var(--color-text-sub);
+}
+
+/* ── Thêm badge variants cho payment & status ── */
+.badge.awaiting {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge.cod {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.badge.vnpay {
+    background: #eef2ff;
+    color: #3730a3;
+}

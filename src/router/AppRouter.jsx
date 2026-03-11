@@ -25,6 +25,8 @@ import Checkout from "../pages/order/Checkout";
 import OrderHistory from "../pages/order/OrderHistory";
 import OrderDetail from "../pages/order/OrderDetail";
 
+import PaymentResult from "../pages/payment/PaymentResult";
+
 
 
 /* ── Placeholder — trang chưa xây dựng ── */
@@ -133,7 +135,7 @@ export default function AppRouter() {
         }
       />
 
-      {/* ── [THÊM MỚI] Flow Đơn hàng ── */}
+      {/* ── Flow Đơn hàng ── */}
       <Route path={ROUTES.CHECKOUT}
         element={
           <ProtectedRoute requiredRole="USER">
@@ -141,7 +143,7 @@ export default function AppRouter() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route path={ROUTES.ORDERS}
         element={
           <ProtectedRoute requiredRole="USER">
@@ -158,6 +160,14 @@ export default function AppRouter() {
         }
       />
 
+      {/* ── Payment Result — user đã login ── */}
+      <Route path={ROUTES.PAYMENT_RESULT}
+        element={
+          <ProtectedRoute requiredRole="USER">
+            <PaymentResult />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path={ROUTES.DASHBOARD}
         element={

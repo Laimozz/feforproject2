@@ -12,12 +12,26 @@ const formatPrice = (price) => {
 };
 
 const getStatusClass = (status) => {
-  switch (status?.toLowerCase()) {
-    case 'pending': return 'pending';
-    case 'processing': return 'processing';
-    case 'completed': return 'completed';
-    case 'cancelled': return 'cancelled';
-    default: return 'pending';
+  switch (status?.toUpperCase()) {
+    case 'PENDING':          return 'pending';
+    case 'AWAITING_PAYMENT': return 'awaiting';
+    case 'CONFIRMED':        return 'processing';
+    case 'SHIPPING':         return 'processing';
+    case 'DELIVERED':        return 'completed';
+    case 'CANCELLED':        return 'cancelled';
+    default:                 return 'pending';
+  }
+};
+
+const getStatusLabel = (status) => {
+  switch (status?.toUpperCase()) {
+    case 'PENDING':          return 'Chờ xác nhận';
+    case 'AWAITING_PAYMENT': return 'Chờ thanh toán';
+    case 'CONFIRMED':        return 'Đã xác nhận';
+    case 'SHIPPING':         return 'Đang giao';
+    case 'DELIVERED':        return 'Đã giao';
+    case 'CANCELLED':        return 'Đã hủy';
+    default:                 return status;
   }
 };
 
@@ -35,7 +49,7 @@ export default function OrderDetail() {
     <div className="order-page">
       <AppNavbar />
       <div className="order-container">
-        
+
         {loading ? (
              <div className="order-loading">Đang tải chi tiết đơn hàng...</div>
         ) : error ? (
@@ -61,6 +75,12 @@ export default function OrderDetail() {
                         <span className="info-label">Địa chỉ</span>
                         <span className="info-value" style={{textAlign:"right"}}>{currentOrder.shippingAddress}</span>
                      </div>
+                     <div className="info-row">
+                        <span className="info-label">Thanh toán</span>
+                        <span className="info-value">
+                          {currentOrder.paymentMethod === "VNPAY" ? "🏦 VNPay" : "💵 COD"}
+                        </span>
+                     </div>
                      <div className="info-row" style={{borderTop: "1px dashed var(--color-border)", marginTop: "12px", paddingTop: "12px"}}>
                         <span className="info-label">Ghi chú</span>
                         <span className="info-value" style={{fontWeight: "400"}}>{currentOrder.note || "Không có"}</span>
@@ -69,16 +89,16 @@ export default function OrderDetail() {
 
                   <Link to="/orders" className="btn-link">← Quay lại danh sách đơn hàng</Link>
                </div>
-               
+
                {/* Box Sản phẩm và Tóm tắt tiền */}
                <div className="detail-right">
                   <div className="detail-card">
                      <h3>Tóm tắt đơn hàng</h3>
-                     
+
                      <div className="info-row">
                         <span className="info-label">Trạng thái</span>
                         <span className={`badge ${getStatusClass(currentOrder.status)}`}>
-                            {currentOrder.status}
+                            {getStatusLabel(currentOrder.status)}
                         </span>
                      </div>
                      <div className="info-row">
