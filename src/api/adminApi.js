@@ -48,6 +48,21 @@ export const deleteAdminCategory = (id) =>
                  GET /api/products (public, dùng được trong admin)
 ══════════════════════════════════════════════ */
 
+const toProductFormData = (payload) => {
+  const fd = new FormData();
+  fd.append("name", payload.name);
+  fd.append("description", payload.description || "");
+  fd.append("price", String(payload.price));
+  fd.append("stock", String(payload.stock));
+  fd.append("categoryId", String(payload.categoryId));
+
+  if (payload.imageFile) {
+    fd.append("imageFile", payload.imageFile);
+  }
+
+  return fd;
+};
+
 /** Lấy danh sách tất cả sản phẩm có phân trang
  *  BE trả về Page<ProductResponse>
  *  @param {number} page  - trang hiện tại (bắt đầu từ 0)
@@ -60,20 +75,25 @@ export const getAdminProducts = (page = 0, size = 10) =>
  *  @param {{ name, description, price, stock, imageUrl, categoryId }} payload
  */
 export const createAdminProduct = (payload) =>
-  axiosInstance.post(ENDPOINTS.ADMIN_PRODUCTS, payload);
+  axiosInstance.post(ENDPOINTS.ADMIN_PRODUCTS, toProductFormData(payload), {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 /** Cập nhật sản phẩm — PUT /admin/products/{id}
  *  @param {number} id
  *  @param {{ name, description, price, stock, imageUrl, categoryId }} payload
  */
 export const updateAdminProduct = (id, payload) =>
-  axiosInstance.put(ENDPOINTS.ADMIN_PRODUCT_BY_ID(id), payload);
+  axiosInstance.put(ENDPOINTS.ADMIN_PRODUCT_BY_ID(id), toProductFormData(payload), {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 /** Xóa sản phẩm — DELETE /admin/products/{id}
  *  @param {number} id
  */
 export const deleteAdminProduct = (id) =>
   axiosInstance.delete(ENDPOINTS.ADMIN_PRODUCT_BY_ID(id));
+
 
 
 /** Lấy sản phẩm theo danh mục — GET /products/category/{categoryId}

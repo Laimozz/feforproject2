@@ -165,27 +165,50 @@
 }
 
 /* ── Phần ảnh card ── */
-.product-card__img-wrap {
+/* .product-card__img-wrap {
   width: 100%;
   aspect-ratio: 1 / 1;
-  /* ảnh vuông */
   overflow: hidden;
   background: #f8fafc;
   position: relative;
-}
+} */
 
-.product-card__img {
+/* .product-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* crop ảnh vừa khung */
   transition: transform 0.3s ease;
+} */
+
+/* .product-card:hover .product-card__img {
+  transform: scale(1.04);
+} */
+
+.product-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f8fafc;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.product-card:hover .product-card__img {
-  transform: scale(1.04);
-  /* zoom nhẹ khi hover */
+.product-card__img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  /* không crop/phóng ép */
+  image-rendering: auto;
+  transition: none;
+  /* bỏ zoom */
 }
+
+
 
 /* Placeholder khi không có ảnh */
 .product-card__img-placeholder {

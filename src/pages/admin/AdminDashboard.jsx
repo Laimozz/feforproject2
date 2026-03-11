@@ -353,7 +353,15 @@ function ProductSection() {
     openDelete, closeDelete, confirmDelete,
     categories,
     selectedCategory, handleCategoryFilter,
+    selectedImageFile, imagePreviewUrl, handleImageChange,
   } = useAdminProducts();
+
+  const onPickImage = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    handleImageChange(file);
+    e.target.value = "";
+  };
 
   /* Định dạng giá tiền Việt Nam: 150000 → "150.000 ₫" */
   const formatPrice = (price) =>
@@ -687,34 +695,40 @@ function ProductSection() {
                 </div>
               </div>
 
-              {/* ── Row 3: URL ảnh + preview ── */}
+              {/* ── Row 3: File ảnh + preview ── */}
               <div className="admin__form-field">
-                <label className="admin__form-label">URL Ảnh Sản Phẩm</label>
+                <label className="admin__form-label">Ảnh Sản Phẩm</label>
                 <input
                   className="admin__form-input"
-                  name="imageUrl"
-                  type="url"
-                  value={form.imageUrl}
-                  onChange={handleFormChange}
-                  placeholder="https://example.com/image.jpg"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={onPickImage}
                 />
-                {/* Preview ảnh realtime khi nhập URL */}
-                {form.imageUrl && (
+
+                {selectedImageFile && (
+                  <div style={{ marginTop: 6, fontSize: "0.8rem", color: "#64748b" }}>
+                    Đã chọn: {selectedImageFile.name}
+                  </div>
+                )}
+
+                {imagePreviewUrl && (
                   <div style={{ marginTop: 8 }}>
                     <img
-                      src={form.imageUrl}
+                      src={imagePreviewUrl}
                       alt="Preview"
                       style={{
-                        width: 80, height: 80, objectFit: "cover",
-                        borderRadius: 8, border: "2px solid #e2e8f0",
+                        width: 80,
+                        height: 80,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                        border: "2px solid #e2e8f0",
                       }}
-                      /* Ẩn ảnh nếu URL không hợp lệ */
                       onError={(e) => { e.target.style.display = "none"; }}
-                      onLoad={(e) => { e.target.style.display = "block"; }}
                     />
                   </div>
                 )}
               </div>
+
 
               {/* ── Mô tả ── */}
               <div className="admin__form-field">
