@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./AppNavbar.css";
-import { useAuth } from "../../context/AuthContext";
+import "./Appnavbar.css";
+import { useAuth } from "../../context/Authcontext";
 import { ROUTES } from "../../constants/routes";
 
 
