@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./ChangePassword.css";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import useChangePassword from "../../hooks/useChangePassword";
 import { ROUTES } from "../../constants/routes";
 

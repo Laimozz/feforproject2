@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./CategoriesPage.css";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import { getCategories } from "../../api/categoryApi";
 
 /* Màu nền và icon cho từng card — xoay vòng theo index */

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import useProfile from "../../hooks/useProfile";
 import "./Profile.css";
 

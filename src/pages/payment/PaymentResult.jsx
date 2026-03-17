@@ -1,7 +1,7 @@
 // Vị trí: src/pages/payment/PaymentResult.jsx
 import React from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import Footer from "../../components/layout/Footer";
 import "../order/OrderPage.css";
 

@@ -9,7 +9,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./CategoryDetail.css";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import { getCategoryById } from "../../api/categoryApi";
 import { ROUTES } from "../../constants/routes";
 import useProductsByCategory from "../../hooks/useProductsByCategory";

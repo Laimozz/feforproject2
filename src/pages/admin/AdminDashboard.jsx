@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./AdminDashboard.css";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import useAdminUsers from "../../hooks/useAdminUsers";
 import useAdminCategories from "../../hooks/useAdminCategories";
 

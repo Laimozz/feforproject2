@@ -1,5 +1,5 @@
 import "./Contact.css";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 
 const SOCIALS = [
   {

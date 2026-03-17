@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import Footer from "../../components/layout/Footer";
 import useProductDetail from "../../hooks/useProductDetail";
 import useCart from "../../hooks/useCart";

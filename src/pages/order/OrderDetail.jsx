@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useOrders from "../../hooks/useOrders";
-import AppNavbar from "../../components/layout/AppNavbar";
+import AppNavbar from "../../components/layout/Appnavbar";
 import Footer from "../../components/layout/Footer";
 import "./OrderPage.css";
 
