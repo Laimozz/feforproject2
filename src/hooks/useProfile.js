@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import profileApi from "../api/profileApi";
+import profileApi from "../api/ProfileApi";
 import { ROUTES } from "../constants/routes";
 
 const useProfile = () => {
