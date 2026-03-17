@@ -10,7 +10,7 @@ import AppNavbar from "../../components/layout/Appnavbar";
 import Footer from "../../components/layout/Footer";
 import useProductDetail from "../../hooks/useProductDetail";
 import useCart from "../../hooks/useCart";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/Authcontext";
 import { ROUTES } from "../../constants/routes";
 import "./ProductDetail.css";
 
