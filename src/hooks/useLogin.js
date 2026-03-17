@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // ✅ THÊM: lấy hàm loginSuccess từ AuthContext
+import { useAuth } from "../context/Authcontext"; // ✅ THÊM: lấy hàm loginSuccess từ AuthContext
 
 export default function useLogin() {
   const navigate = useNavigate();
