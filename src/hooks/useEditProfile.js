@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import profileApi from "../api/profileApi";
+import profileApi from "../api/ProfileApi";
 import { ROUTES } from "../constants/routes";
 
 const useEditProfile = () => {
